@@ -1,0 +1,207 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+    <h:head>
+        <title>Chapter #{questionBean.id}</title>
+
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
+        <meta content="Introduction to Java Programming, Java Multiple-choice questions" name="description"/>
+        <meta content="Java Multiple-choice questions, Test, Java, Liang, Y. Daniel Liang, Introduction to Java Programming, Brief, Comprehensive" name="keywords"/>
+        <link rel="stylesheet" type="text/css" href="http://www.cs.armstrong.edu/liang/common/intro6e.css" />
+        <link rel="stylesheet" type="text/css" href="http://www.cs.armstrong.edu/liang/common/intro6eselftest.css" />
+        <style> 
+            @media print {
+                body {font-size: 12px}
+                h3 {font-size: 13px}
+            }      
+        </style>
+
+
+        <h:outputScript library="javax.faces" name="jsf.js" target="head" />
+
+    </h:head>
+
+    <h:body rendered="true">
+        <div style="text-align: center; margin-bottom: 0em">
+            <h3 style="text-align: center; margin-bottom: 0.2em; color: navy; font-family: Verdana, Helvetica, sans-serif">
+                Introduction to Java Programming, Tenth Edition, 
+                <a href="http://www.cs.armstrong.edu/liang" style="text-decoration: none; color: green">Y. Daniel Liang</a></h3>
+        </div>
+        <div id="subtabextendline">
+        </div>
+        <div style="margin-top:0.2em; text-align: center;">This quiz is for students to practice. A large number of additional questionBean is available for instructors from the Instructor's Resource Website.
+        </div>
+        <!-- main content -->
+        <div id="maincontentstyle"  style="margin-top: -1em; text-align : center; color: #000000">
+            <div id="boxstyle" style="width: 90%; max-width: 800px; margin-left: auto; margin-right: auto;
+                 text-align: left; border-color: #edc100">
+
+                <style> 
+
+                    #sectiontitle {background-color: yellow; color: navy; font-style: italic; padding-left: 0.7em}#question {font-family: "Courier New", Courier, Verdana, Helvetica, sans-serif; font-size: 100%; 
+                                                                                                                             color: #8000f0; color: black; margin-left: 2.15em}
+                    #questionstatement {font-family: 
+                                            monospace, Courier, Verdana, Helvetica, sans-serif; font-size: 85%; color: #8000f0; 
+                                        color: black; margin-left:0.5em; margin-top:0.5em; margin-bottom:0.5em;  }
+                    #choices {font-family: monospace, Verdana, Helvetica, sans-serif; font-size: 85%; 
+                              color: #8000f0; color: black; margin-left:25.0pt; margin-left:0.5em; margin-bottom:0.5em; }
+                    .preBlock {margin-left:0px;text-indent:0.0px; font-family:monospace; font-size: 120%}
+                    .keyword {color: green;}
+                    .comment {color: darkred;  }
+                    .literal {color: darkblue}
+                    .constant {color: teal}
+                    #h3style {color: white; font-family: Helvetica, sans-serif;  border-color: #6193cb; text-align: center;margin-bottom: 0.5em; background-color: #6193cb;}  </style>
+                <h:form>
+                    <h:panelGrid style = "float: left">
+                    <h:selectOneMenu value = "#{questionBean.chapterSelect}">
+                    <f:selectItems value="#{questionBean.getChapterArray()}"/>
+                    </h:selectOneMenu>
+                    <h:commandButton value = "select" action = "#{questionBean.selectChapter()}" style = "
+                                             color: white;
+                                             border: none;
+                                             outline: none;
+                                             font-size: 14px;
+                                             font-weight: 200;
+                                             overflow: hidden;
+                                             position: relative;
+                                             border-radius: 2px;
+                                             letter-spacing: 2px;
+                                             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+                                             text-transform: uppercase;
+                                             background-color: #009966;
+                                             "/> </h:panelGrid>
+                    
+                    
+                    <h:panelGrid style = "float:right">
+                             <h:commandButton value="Logout" action="Login?faces-redirect=true" style = "
+                                             color: white;
+                                             border: none;
+                                             outline: none;
+                                             font-size: 14px;
+                                             font-weight: 200;
+                                             overflow: hidden;
+                                             position: relative;
+                                             border-radius: 2px;
+                                             letter-spacing: 2px;
+                                             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+                                             text-transform: uppercase;
+                                             background-color: #003366;
+                                             "/></h:panelGrid>
+
+                                             <br/><br/><pre><b><h1><h:outputText value="Chapter #{questionBean.id}"/></h1></b></pre>         
+
+                </h:form>
+
+                <br/> <br/>     
+                <h:panelGroup id = "panelgroup" rendered="true">
+                    <h:form>
+                        <ui:repeat value="#{questionBean.getQuestionsArray(questionBean.id)}" id="repeat"  var="question" varStatus="currentIndex" rendered="true">
+
+                            <h:form rendered="true" id="form">
+                                <f:ajax rendered="true" resetValues="true">
+
+                                    <pre>  <h:outputText value = "#{question.questionText}"  style ="word-break: break-all; white-space:normal " escape="false"/> 
+
+                    <h:selectOneRadio value="#{question.selectedRadio}" rendered="#{question.getAnswerKeyLength() == 1  and question.getNumOptions()== 2 }" layout="pageDirection">
+                        <f:selectItem itemValue="a" itemLabel="#{question.choiceA}"/>
+                        <f:selectItem itemValue="b" itemLabel="#{question.choiceB}"/>
+                    </h:selectOneRadio>
+                    
+                    <h:selectOneRadio value="#{question.selectedRadio}"  rendered="#{question.getAnswerKeyLength() == 1  and question.getNumOptions()== 3 }" layout="pageDirection" >
+                        <f:ajax immediate="true" event="valueChange" execute="@this" />
+                        <f:selectItem itemValue="a" itemLabel="#{question.choiceA}"/>
+                        <f:selectItem itemValue="b" itemLabel="#{question.choiceB}"/>
+                        <f:selectItem itemValue="c" itemLabel="#{question.choiceC}"/>
+                    </h:selectOneRadio>
+                    
+                    <h:selectOneRadio value="#{question.selectedRadio}" rendered="#{question.getAnswerKeyLength() == 1  and question.getNumOptions()== 4 }" layout="pageDirection">
+                 
+                       <f:selectItem itemValue="a" itemLabel="#{question.choiceA}"/>
+                       <f:selectItem itemValue="b" itemLabel="#{question.choiceB}"/>
+                       <f:selectItem itemValue="c" itemLabel="#{question.choiceC}"/>
+                       <f:selectItem itemValue="d" itemLabel="#{question.choiceD}"/>                          
+                    </h:selectOneRadio>
+
+                                <h:selectOneRadio value="#{question.selectedRadio}" rendered="#{question.getAnswerKeyLength() == 1  and question.getNumOptions()== 5 }" layout="pageDirection">
+                                   <f:ajax immediate="true" event="valueChange" execute="@this" />
+                                    <f:selectItem itemValue="a" itemLabel="#{question.choiceA}"/>
+                                    <f:selectItem itemValue="b" itemLabel="#{question.choiceB}"/>
+                                    <f:selectItem itemValue="c" itemLabel="#{question.choiceC}"/>
+                                    <f:selectItem itemValue="d" itemLabel="#{question.choiceD}"/>
+                                    <f:selectItem itemValue="e" itemLabel="#{question.choiceE}"/>
+                                </h:selectOneRadio>
+
+
+
+                                <h:selectManyCheckbox value="#{question.selectedCheck}" rendered = "#{question.getAnswerKeyLength() > 1 and question.getNumOptions()== 2}" layout="pageDirection">
+                                    <f:selectItem itemValue="a" itemLabel="#{question.choiceA}"/>
+                                    <f:selectItem itemValue="b" itemLabel="#{question.choiceB}"/>
+                                </h:selectManyCheckbox>
+
+                                <h:selectManyCheckbox value="#{question.selectedCheck}" rendered = "#{question.getAnswerKeyLength() > 1 and question.getNumOptions()== 3}" layout="pageDirection">
+                                   <f:ajax immediate="true" event="valueChange" execute="@this" />
+                                    <f:selectItem itemValue="a" itemLabel="#{question.choiceA}"/>
+                                    <f:selectItem itemValue="b" itemLabel="#{question.choiceB}"/>
+                                    <f:selectItem itemValue="c" itemLabel="#{question.choiceC}"/>
+                                </h:selectManyCheckbox>
+
+                                <h:selectManyCheckbox value="#{question.selectedCheck}"  rendered = "#{question.getAnswerKeyLength() > 1 and question.getNumOptions()== 4}" layout="pageDirection">
+                                    <f:ajax immediate="true" event="valueChange" execute="@this" />
+                                    <f:selectItem itemValue="a" itemLabel="#{question.choiceA}"/>
+                                    <f:selectItem itemValue="b" itemLabel="#{question.choiceB}"/>
+                                    <f:selectItem itemValue="c" itemLabel="#{question.choiceC}"/>
+                                    <f:selectItem itemValue="d" itemLabel="#{question.choiceD}"/>
+                                </h:selectManyCheckbox>
+
+                                <h:selectManyCheckbox value="#{question.selectedCheck}" rendered = "#{question.getAnswerKeyLength() > 1 and question.getNumOptions()== 5}" layout="pageDirection">
+                                   <f:ajax immediate="true" event="valueChange" execute="@this" />
+                                    <f:selectItem itemValue="a" itemLabel="#{question.choiceA}"/>
+                                    <f:selectItem itemValue="b" itemLabel="#{question.choiceB}"/>
+                                    <f:selectItem itemValue="c" itemLabel="#{question.choiceC}"/>
+                                    <f:selectItem itemValue="d" itemLabel="#{question.choiceD}"/>
+                                    <f:selectItem itemValue="e" itemLabel="#{question.choiceE}"/>
+                                </h:selectManyCheckbox>
+                                    <br/>
+                                
+                                    <div> <h:outputLabel title= "#{question.hint}" value="Hint" rendered="#{question.hint.trim().length() > 1}"/></div>
+                                <h:panelGrid style="padding-left: 100px">
+                                <h:commandButton value = "Check Answer" actionListener = "#{questionBean.click(currentIndex.index)}"  style = "
+                                             color: white;
+                                             border: none;
+                                             outline: none;
+                                             font-size: 14px;
+                                             font-weight: 200;
+                                             overflow: hidden;
+                                             position: relative;
+                                             border-radius: 2px;
+                                             letter-spacing: 2px;
+                                             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+                                             text-transform: uppercase;
+                                             background-color: #009966;
+                                             "
+                                                         rendered="#{!question.getIsCorrect()}" id="button"  >
+                                    <f:param name="id" value="#{questionBean.id}" /> 
+                                    <f:ajax execute="@form" render="@form" />
+                                </h:commandButton></h:panelGrid>
+                                
+                                <div id = "renderedButtons"><h:graphicImage value="resources/images/check.png" rendered="#{question.getIsCorrect()}" style=" margin-left: 450px;  " height="15" />
+                               <h:graphicImage value="resources/images/xmark.png" rendered="#{!question.getIsCorrect() and question.isAttempted}" style=" margin-left: 450px;  " height="15" /></div>
+                                    </pre>
+                                </f:ajax>
+                            </h:form>               
+                        </ui:repeat>
+
+
+                    </h:form>
+                </h:panelGroup>
+            </div>
+        </div>
+    </h:body>
+</html>
