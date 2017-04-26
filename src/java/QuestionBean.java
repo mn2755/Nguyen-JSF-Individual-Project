@@ -1,9 +1,6 @@
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -24,7 +21,7 @@ import javax.servlet.http.HttpSession;
 @SessionScoped
 @ViewScoped
 
-public class QuestionBean implements Serializable {
+public class QuestionBean extends DBConnection implements Serializable {
 
     private int chapter = 0;
     private String id;
@@ -35,13 +32,11 @@ public class QuestionBean implements Serializable {
 
     public void chapterNoToArray() throws ClassNotFoundException, SQLException {
         questionsArray = new ArrayList();
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://liang.armstrong.edu:3306/nguyen", "nguyen", "tiger");
-        //Connection con = DriverManager.getConnection("jdbc:mysql://localhost/selftest", "root", "123qwe");
+        initializeJdbc();
         try {
-            PreparedStatement ps = con.prepareStatement("select * from intro10equiz where chapterno = ?");
-            ps.setString(1, Integer.toString(chapter));
-            ResultSet rs = ps.executeQuery();
+            //PreparedStatement ps = con.prepareStatement("select * from intro10equiz where chapterno = ?");
+            chNoSelect.setString(1, Integer.toString(chapter));
+            ResultSet rs = chNoSelect.executeQuery();
             while (rs.next()) {
                 Question question = new Question();
                 question.setChapterNo(rs.getInt("chapterNo"));
@@ -58,11 +53,11 @@ public class QuestionBean implements Serializable {
             }
 
             for (int i = 0; i <= questionsArray.size(); i++) {
-                ps = con.prepareStatement("SELECT * from intro10e WHERE chapterNo =? and questionNo =? and username =?");
-                ps.setString(1, Integer.toString(chapter));
-                ps.setString(2, Integer.toString(i + 1));
-                ps.setString(3, getUsername());
-                rs = ps.executeQuery();
+                //ps = con.prepareStatement("SELECT * from intro10e WHERE chapterNo =? and questionNo =? and username =?");
+                scoreSelect.setString(1, Integer.toString(chapter));
+                scoreSelect.setString(2, Integer.toString(i + 1));
+                scoreSelect.setString(3, getUsername());
+                rs = scoreSelect.executeQuery();
                 while (rs.next()) {
                     questionsArray.get(i).setIsCorrect(rs.getBoolean("isCorrect"));
                     questionsArray.get(i).setSelectedBooleans(rs.getBoolean("answerA"), rs.getBoolean("answerB"), rs.getBoolean("answerC"), rs.getBoolean("answerD"), rs.getBoolean("answerE"));
@@ -108,24 +103,21 @@ public class QuestionBean implements Serializable {
         }
         HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String host = httpServletRequest.getRemoteAddr();
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://liang.armstrong.edu:3306/nguyen", "nguyen", "tiger");
-        //Connection con = DriverManager.getConnection("jdbc:mysql://localhost/selftest", "root", "123qwe");
+        initializeJdbc();
         try {
-            PreparedStatement ps = con.prepareStatement("insert into intro10e values(?,?,?,?,?,?,?,?,?,?,?)");
-            ps.setInt(1, chapter);
-            ps.setInt(2, index + 1);
-            ps.setBoolean(3, questionsArray.get(index).getIsCorrect());
-            ps.setTimestamp(4, new Timestamp(new Date().getTime()));
-            ps.setString(5, host);
-            ps.setBoolean(6, questionsArray.get(index).selected.contains("a"));
-            ps.setBoolean(7, questionsArray.get(index).selected.contains("b"));
-            ps.setBoolean(8, questionsArray.get(index).selected.contains("c"));
-            ps.setBoolean(9, questionsArray.get(index).selected.contains("d"));
-            ps.setBoolean(10, questionsArray.get(index).selected.contains("e"));
-            ps.setString(11, getUsername());
-
-            int i = ps.executeUpdate();
+            //PreparedStatement ps = con.prepareStatement("insert into intro10e values(?,?,?,?,?,?,?,?,?,?,?)");
+            intro10eInsert.setInt(1, chapter);
+            intro10eInsert.setInt(2, index + 1);
+            intro10eInsert.setBoolean(3, questionsArray.get(index).getIsCorrect());
+            intro10eInsert.setTimestamp(4, new Timestamp(new Date().getTime()));
+            intro10eInsert.setString(5, host);
+            intro10eInsert.setBoolean(6, questionsArray.get(index).selected.contains("a"));
+            intro10eInsert.setBoolean(7, questionsArray.get(index).selected.contains("b"));
+            intro10eInsert.setBoolean(8, questionsArray.get(index).selected.contains("c"));
+            intro10eInsert.setBoolean(9, questionsArray.get(index).selected.contains("d"));
+            intro10eInsert.setBoolean(10, questionsArray.get(index).selected.contains("e"));
+            intro10eInsert.setString(11, getUsername());
+            intro10eInsert.executeUpdate();
         } catch (IOException | SQLException ex) {
         }
 
@@ -149,15 +141,13 @@ public class QuestionBean implements Serializable {
     }
 
     public boolean containsDB(String user, int chapterNo, int questionNo) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://liang.armstrong.edu:3306/nguyen", "nguyen", "tiger");
-        //Connection con = DriverManager.getConnection("jdbc:mysql://localhost/selftest", "root", "123qwe");
+       initializeJdbc();
         try {
-            PreparedStatement ps = con.prepareStatement("SELECT * from intro10e WHERE chapterNo =? and questionNo =? and username =?");
-            ps.setString(1, Integer.toString(chapterNo));
-            ps.setString(2, Integer.toString(questionNo));
-            ps.setString(3, user);
-            ResultSet rs = ps.executeQuery();
+            //PreparedStatement ps = con.prepareStatement("SELECT * from intro10e WHERE chapterNo =? and questionNo =? and username =?");
+            intro10eSelect.setString(1, Integer.toString(chapterNo));
+            intro10eSelect.setString(2, Integer.toString(questionNo));
+            intro10eSelect.setString(3, user);
+            ResultSet rs = intro10eSelect.executeQuery();
             return rs.next();
         } catch (SQLException ex) {
         }
@@ -165,14 +155,12 @@ public class QuestionBean implements Serializable {
     }
 
     public void delete(String user, int chapterNo, int questionN0) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://liang.armstrong.edu:3306/nguyen", "nguyen", "tiger");
-        //Connection con = DriverManager.getConnection("jdbc:mysql://localhost/selftest", "root", "123qwe");
-        PreparedStatement ps = con.prepareStatement("DELETE from intro10e WHERE chapterNo =? and questionNo =? and username =?");
-        ps.setString(1, Integer.toString(chapterNo));
-        ps.setString(2, Integer.toString(questionN0));
-        ps.setString(3, user);
-        ps.executeUpdate();
+        initializeJdbc();
+        //PreparedStatement ps = con.prepareStatement("DELETE from intro10e WHERE chapterNo =? and questionNo =? and username =?");
+        intro10eDelete.setString(1, Integer.toString(chapterNo));
+        intro10eDelete.setString(2, Integer.toString(questionN0));
+        intro10eDelete.setString(3, user);
+        intro10eDelete.executeUpdate();
     }
 
     public int getChapter() {
