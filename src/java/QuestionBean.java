@@ -7,19 +7,18 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-@RequestScoped
+
 @Named(value = "questionBean")
-@SessionScoped
-@ViewScoped
+@RequestScoped
+@ManagedBean
 
 public class QuestionBean extends DBConnection implements Serializable {
 
@@ -51,7 +50,7 @@ public class QuestionBean extends DBConnection implements Serializable {
                 question.setHint(rs.getString("hint"));
                 questionsArray.add(question);
             }
-
+closeJdbc();
             for (int i = 0; i <= questionsArray.size(); i++) {
                 //ps = con.prepareStatement("SELECT * from intro10e WHERE chapterNo =? and questionNo =? and username =?");
                 scoreSelect.setString(1, Integer.toString(chapter));
@@ -66,6 +65,7 @@ public class QuestionBean extends DBConnection implements Serializable {
             }
         } catch (IOException | SQLException ex) {
         }
+
     }
 
     public String getId() {
@@ -100,6 +100,7 @@ public class QuestionBean extends DBConnection implements Serializable {
         if (containsDB(getUsername(), chapter, index + 1)) {
             delete(getUsername(), chapter, index + 1);
             isAnswered = true;
+            closeJdbc();
         }
         HttpServletRequest httpServletRequest = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String host = httpServletRequest.getRemoteAddr();
@@ -120,7 +121,7 @@ public class QuestionBean extends DBConnection implements Serializable {
             intro10eInsert.executeUpdate();
         } catch (IOException | SQLException ex) {
         }
-
+closeJdbc();
         return "Questions?faces-redirect=true&username=" + username + "&id=" + id;
     }
 
@@ -137,7 +138,7 @@ public class QuestionBean extends DBConnection implements Serializable {
         HttpServletRequest httpReq = (HttpServletRequest) etx.getRequest();
         HttpSession session = httpReq.getSession();
         session.setAttribute("username", "");
-        return "Login?faces-redirect=true";
+        return "Account?faces-redirect=true";
     }
 
     public boolean containsDB(String user, int chapterNo, int questionNo) throws ClassNotFoundException, SQLException {
@@ -151,6 +152,7 @@ public class QuestionBean extends DBConnection implements Serializable {
             return rs.next();
         } catch (SQLException ex) {
         }
+        closeJdbc();
         return false;
     }
 
@@ -161,6 +163,7 @@ public class QuestionBean extends DBConnection implements Serializable {
         intro10eDelete.setString(2, Integer.toString(questionN0));
         intro10eDelete.setString(3, user);
         intro10eDelete.executeUpdate();
+        closeJdbc();
     }
 
     public int getChapter() {
@@ -177,7 +180,7 @@ public class QuestionBean extends DBConnection implements Serializable {
         HttpSession session = httpReq.getSession();
         username = (String) session.getAttribute("username");
         if (username == null || username.trim().equals("")) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("Menu.xhtml");
         }
         return username;
     }

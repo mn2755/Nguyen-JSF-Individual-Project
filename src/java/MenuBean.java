@@ -1,6 +1,5 @@
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,12 +15,13 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-@RequestScoped
 @Named(value = "menu")
+@RequestScoped
 @SessionScoped
 @ManagedBean
+//@ViewScoped
 
-public class MenuBean implements Serializable{
+public class MenuBean {
 
     private String username;
     private String firstname;
@@ -39,16 +39,16 @@ public class MenuBean implements Serializable{
             FacesContext.getCurrentInstance().getExternalContext().redirect("Login.xhtml");
         }
         Class.forName("com.mysql.jdbc.Driver");
-      Connection con = DriverManager.getConnection("jdbc:mysql://liang.armstrong.edu:3306/nguyen", "nguyen", "tiger");
-        //Connection con = DriverManager.getConnection("jdbc:mysql://localhost/selftest", "root", "123qwe");
+        //Connection con = DriverManager.getConnection("jdbc:mysql://liang.armstrong.edu:3306/dacanay", "dacanay", "tiger");
+        Connection con = DriverManager.getConnection("jdbc:mysql://aal2rblybq2rx3.cti6dcqnzk8e.us-east-2.rds.amazonaws.com:3306/quizz", "mary", "marymary");
         try {
-            PreparedStatement ps = con.prepareStatement("SELECT * from user WHERE username = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT * from users WHERE username = ?");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                setFirstname(rs.getString("firstName"));
+                setFirstname(rs.getString("FIRSTNAME"));
                 setMi(rs.getString("MI"));
-                setLastname(rs.getString("lastName"));
+                setLastname(rs.getString("LASTNAME"));
             }
         } catch (Exception ex) {
         }

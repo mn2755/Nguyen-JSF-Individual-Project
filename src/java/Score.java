@@ -1,11 +1,8 @@
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Score {
+public class Score extends DBConnection {
 
     int chapter;
     int numQuestions = 0;
@@ -13,23 +10,21 @@ public class Score {
     int numCorrect = 0;
 
     Score(int chapter, String username) throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.jdbc.Driver");
-     Connection con = DriverManager.getConnection("jdbc:mysql://liang.armstrong.edu:3306/nguyen", "nguyen", "tiger");
-        //Connection con = DriverManager.getConnection("jdbc:mysql://localhost/selftest", "root", "123qwe");
+        initializeJdbc();
         try {
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM intro10equiz WHERE chapterNo =?");
-            ps.setString(1, Integer.toString(chapter));
-            ResultSet rs = ps.executeQuery();
+            //PreparedStatement ps = con.prepareStatement("SELECT * FROM intro10equiz WHERE chapterNo =?");
+            intro10equizSelect.setString(1, Integer.toString(chapter));
+            ResultSet rs = intro10equizSelect.executeQuery();
             while (rs.next()) {
                 numQuestions++;
             }
 
             for (int i = 0; i <= numQuestions; i++) {
-                ps = con.prepareStatement("SELECT * from intro10e WHERE chapterNo =? and questionNo =? and username =?");
-                ps.setString(1, Integer.toString(chapter));
-                ps.setString(2, Integer.toString(i + 1));
-                ps.setString(3, username);
-                rs = ps.executeQuery();
+                //ps = con.prepareStatement("SELECT * from intro10e WHERE chapterNo =? and questionNo =? and username =?");
+                intro10eSelect.setString(1, Integer.toString(chapter));
+                intro10eSelect.setString(2, Integer.toString(i + 1));
+                intro10eSelect.setString(3, username);
+                rs = intro10eSelect.executeQuery();
                 while (rs.next()) {
 
                     if (rs.getBoolean("isCorrect")) {

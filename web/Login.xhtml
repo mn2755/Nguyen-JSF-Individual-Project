@@ -1,5 +1,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <link rel="stylesheet" href="newcss.css" type="text/css"/>
+
 
 
     <h:head>
@@ -7,8 +10,14 @@
         <meta http-equiv="content-type" content="text/html; charset=iso-8859-1"/>
         <meta content="Introduction to Java Programming, Java Multiple-choice questions" name="description"/>
         <meta content="Java Multiple-choice questions, Test, Java, Liang, Y. Daniel Liang, Introduction to Java Programming, Brief, Comprehensive" name="keywords"/>
-
+        <link rel="stylesheet" type="text/css" href="http://www.cs.armstrong.edu/liang/common/intro6e.css" />
         <link rel="stylesheet" type="text/css" href="http://www.cs.armstrong.edu/liang/common/intro6eselftest.css" />
+
+        <style type="text/css">
+            .ui-layout-unit{
+                border: none;
+            }
+        </style>
         <style> 
             @media print {
                 body {font-size: 12px}
@@ -17,11 +26,9 @@
         </style>
 
         <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
-
-
     </h:head>
 
-    <h:body rendered="true" >
+    <h:body rendered="true">
         <div style="text-align: center; margin-bottom: 0em">
             <h3 style="text-align: center; margin-bottom: 0.2em; color: navy; font-family: Verdana, Helvetica, sans-serif">
                 Introduction to Java Programming, Tenth Edition, 
@@ -33,162 +40,76 @@
         <!-- main content -->
         <div id="maincontentstyle"  style="margin-top: -1em; text-align : center; color: #000000">
             <div id="boxstyle" style="width: 90%; max-width: 800px; margin-left: auto; margin-right: auto;
-                 text-align: left">
-                <style> 
-                    #cover1 {margin-left: 1em; margin-top: 1em; width: 4em; position: absolute; top: 0em; height: 6em}
-                    #cover2 {margin-top: 1em; width: 4em; position: absolute; top: 0em; height: 6em; margin-left: 5.2em}
-                    #cover3 {margin-top: 1em;width: 4em; position: absolute; top: 0em; height: 6em; margin-left: 9.4em}
-                    #booktitle {height: 1em; margin: 0.1em 0em; font: bold 150% Verdana, Arial, Helvetica, sans-serif; color: navy; text-align: center}
-                    #edition {height: 1em; margin: 0.25em 0em; font: bold 140% Helvetica, sans-serif; color: navy; text-align: center}
-                    #author {height: 1em; margin: 0.25em 0em; font: bold 140% Verdana, Arial, Helvetica, sans-serif; color: navy; text-align: center}
-                    #part {margin-top: 1em; margin-bottom: 1ex; font: bold 100%   Helvetica, Verdana, "Times New Roman", Arial, sans-serif; color: #123456; margin-left: 0.5em}
-                    #chapter {margin-top: 0.1em; margin-bottom: 0.5ex; font: 100% "Times New Roman", Helvetica, sans-serif; font-size: 14px; color: black; margin-left: 1em}
+                 text-align: left; border-color: #edc100"/>
+            <style> 
+                #sectiontitle {background-color: yellow; color: navy; font-style: italic; padding-left: 0.7em}#question {font-family: "Courier New", Courier, Verdana, Helvetica, sans-serif; font-size: 100%; 
+                                                                                                                         color: #8000f0; color: black; margin-left: 2.15em}
+                #questionstatement {font-family: 
+                                        monospace, Courier, Verdana, Helvetica, sans-serif; font-size: 85%; color: #8000f0; 
+                                    color: black; margin-left:0.5em; margin-top:0.5em; margin-bottom:0.5em;  }
+                #choices {font-family: monospace, Verdana, Helvetica, sans-serif; font-size: 85%; 
+                          color: #8000f0; color: black; margin-left:25.0pt; margin-left:0.5em; margin-bottom:0.5em; }
+                .preBlock {margin-left:0px;text-indent:0.0px; font-family:monospace; font-size: 120%}
+                .keyword {color: green;}
+                .comment {color: darkred;  }
+                .literal {color: darkblue}
+                .constant {color: teal}
+                #h3style {color: white; font-family: Helvetica, sans-serif;  border-color: #6193cb; text-align: center;margin-bottom: 0.5em; background-color: #6193cb;}  </style>
+            <style>
+                .noScrolllayoutUnit .ui-layout-unit-content{
+                    overflow: hidden;
+                }</style>
+            <p:layout>
 
-                    #subtabextendline {clear: both; background: #edc100; margin: 0em; 
-                                       font: bold italic 10em Verdana, Arial, Helvetica, sans-serif; border-bottom: #edc100 0.1em solid; position: relative; text-align: center
-                    }
+                <p:layoutUnit  position="center" styleClass="noScrolllayoutUnit" style = "float: right; align-content:center;" size="30%">
+                    <h:panelGroup  layout="block">
 
-                    #tabextendline {
-                        clear: both; background: #edc100; margin: 0em; 
-                        font: bold italic 10em Verdana, Arial, Helvetica, sans-serif; border-bottom: #edc100 0.1em solid; position: relative; text-align: center
-                    }
+                        <pre><h:form style=" position: relative;
+                                     z-index: 1;
+                                     background: #FFFFFF;
+                                     max-width: 50%;
+                                     margin: 0 auto 100px;
+                                     padding: 45px;">
+ <b><h1 style="font-size: 20px; padding-left: 18%"><pre>Login</pre></h1></b>
 
-                    #tabcontainer {
-                        margin: 0em 0em 0em 20%; width: 62%
-                    }
+                                <h:outputText value="Username "/>
+                                <h:inputText id="username" value="#{login.username}" style = "
+                                             outline: 0;                                    
+                                             background: #f2f2f2;
+                                             display: inline;
+                                             width: 50%;
+                                             border: 0;
+                                             padding: 10px;                                                
+                                             box-sizing: border-box;
+                                             font-size: 11px;"/><br/><br/>
 
-                    #headtabs li {float: left; width: 19.5%}
+                                <h:outputText value="Password "/>
+                                <h:inputSecret id="password" value="#{login.password}" style = "
+                                               outline: 0;                                           
+                                               background: #f2f2f2;
+                                               width: 50%;                                           
+                                               display: inline;
+                                               border: 0;
+                                               padding: 10px;
+                                               box-sizing: border-box;
+                                               font-size: 11px;"/><br/>
 
-                    #headtabs {
-                        width: 100%; padding-right: 0em; padding-left: 0em; padding-bottom: 0em; margin: 0em; padding-top: 0em; list-style-type: none
-                    }
+                                <div style="padding-left:17%"><h:commandButton value="Login" action="#{login.submit()}" style = "
+                                                                               color: white;
+                                                                               border: none;                                               
+                                                                               outline: none;
+                                                                               font-size: 14px;
+                                                                               font-weight: 200;
+                                                                               overflow: hidden;
+                                                                               position: relative;
+                                                                               border-radius: 2px;
+                                                                               letter-spacing: 1px;
+                                                                               box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
-                    #headtabs li a {
-                        display: block; font: bold small Verdana, sans-serif; color: white; position: relative; text-align: center; text-decoration: none
-                    }
-
-                    #headtabs li a.active {color: white; background-color: #edc17f}
-
-                    #headtabs li a.subactive {color: white; background-color: #edc100}
-
-                    #lefttab {
-                        padding-left: 0.1em; padding-right: 0.1em; padding-top: 0.1em; padding-bottom: 0.1em; background-color: #476d9f;
-                        margin-right: -0.1em
-                    }
-
-                    #middletab {
-                        padding-left: 0.1em; padding-right: 0.1em; padding-bottom: 0.1em; padding-top: 0.1em; background-color: #476d9f;
-                        border-left: white 0.1em solid
-                    }
-
-                    #righttab {
-                        padding-right: 0.1em; padding-left: 0.1em; padding-bottom: 0.1em; padding-top: 0.1em; background-color: #476d9f;
-                        border-left: white 1px solid
-                    }
-
-                    #maincontentstyle {
-                        padding-right: 1em; padding-left: 1.5em; background: white repeat-x; 
-                        padding-bottom: 1em; width: auto; padding-top: 1em
-                    }
-
-                    #boxstyle {
-                        padding-bottom: 15px; width: auto; 
-                    }
-
-                    #smallboxstyle { width: 25%; text-align: left;
-                                     font-size: 16px; position: relative; left: 25em; width: 40%;}
-
-                    #h3style {color: white; font-family: Helvetica, sans-serif; background: #edc100; border-color: #edc100; text-align: center;
-                              margin-bottom: 0.5em; background-color: navy}
-
-                    #smallh3style {color: white; font-family: Helvetica, sans-serif; background: #edc100; border-color: #edc100; text-align: center;
-                                   margin-bottom: 0.5em; font-size: 90%}
-
-                    #parastyle {font-size:12px; border-color: cyan; color: black; margin-left: 0.5em; margin-right: 0.5em; margin-top: 0.5em;}
-                    #sectiontitle { background-color: yellow; color: navy; font-style: italic; padding-left: 0.7em}#question {font-family: "Courier New", Courier, Verdana, Helvetica, sans-serif; font-size: 100%; 
-                                                                                                                              color: #8000f0; color: black; margin-left: 2.15em}
-                    #questionstatement {font-family: 
-                                            monospace, Courier, Verdana, Helvetica, sans-serif; font-size: 85%; color: #8000f0; 
-                                        color: black; margin-left:0.5em; margin-top:0.5em; margin-bottom:0.5em;  }
-                    #choices {font-family: monospace, Verdana, Helvetica, sans-serif; font-size: 85%; 
-                              color: #8000f0; color: black; margin-left:25.0pt; margin-left:0.5em; margin-bottom:0.5em; }
-                    .preBlock {margin-left:0px;text-indent:0.0px; font-family:monospace; font-size: 120%}
-                    .keyword {color: green;}
-                    .comment {color: darkred;  }
-                    .literal {color: darkblue}
-                    .constant {color: teal}
-                    #h3style {color: white; font-family: Helvetica, sans-serif;  border-color: #6193cb; text-align: center;margin-bottom: 0.5em; background-color: #6193cb;}  </style>
-
-                <h:panelGrid style ="padding-left: 185px; text-align: center" >        
-                    <div id="page-wrap" style = "text-align: center">
-                        <br/><br/><br/><center><b>Introduction to Java Programming 10th Edition</b></center> <br/><br/>
-
-
-                        <h:form style=" position: inherit;
-                                z-index: 1;
-                                background: #FFFFFF;
-                                max-width: 360px;
-                                margin: 0 auto 100px;
-                                padding: 45px;
-                                text-align: center;
-                                ">
-                            
-                            <h:outputText value="Username"/>
-                            <h:inputText id="username" value="#{login.username}" style = "
-                                         outline: 0;
-                                         background: #f2f2f2;
-                                         width: 100%;
-                                         border: 0;
-                                         margin: 0 0 15px;
-                                         padding: 10px;
-                                         box-sizing: border-box;
-                                         font-size: 11px;"/>
-                            <h:outputText value="Password"/>
-                            <h:inputText id="password" value="#{login.password}" style = "
-                                         outline: 0;
-                                         background: #f2f2f2;
-                                         width: 100%;
-                                         border: 0;
-                                         margin: 0 0 15px;
-                                         padding: 10px;
-                                         box-sizing: border-box;
-                                         font-size: 11px;"/>
-                            <h:commandButton value="Login" action="#{login.submit()}" style = "
-                                             color: white;
-                                             border: none;
-                                             outline: none;
-                                             font-size: 14px;
-                                             font-weight: 200;
-                                             overflow: hidden;
-                                             position: relative;
-                                             border-radius: 2px;
-                                             letter-spacing: 2px;
-                                             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-
-                                             text-transform: uppercase;
-                                             background-color: #009966;
-                                             "/><br/><br/>
-                            <h:outputText value="#{login.flag}"/><br/>
-                            <h:commandButton value="Create Account" action="Account?faces-redirect=true" style = "
-                                             color: white;
-                                             border: none;
-                                             outline: none;
-                                             font-size: 14px;
-                                             font-weight: 200;
-                                             overflow: hidden;
-                                             position: relative;
-                                             border-radius: 2px;
-                                             letter-spacing: 2px;
-                                             box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-
-                                             text-transform: uppercase;
-                                             background-color: #003366;
-                                             "/><br/><br/>
-                        </h:form>
-
-                    </div>
-                </h:panelGrid>
-            </div>
-        </div>
+                                                                               background-color: #009966;"/></div>
+                            </h:form></pre>
+                    </h:panelGroup>
+                </p:layoutUnit>
+            </p:layout></div>
     </h:body>
 </html>

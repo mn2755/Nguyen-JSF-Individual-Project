@@ -1,8 +1,4 @@
-
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -12,13 +8,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Named;
 
-@RequestScoped
 @Named(value = "account")
+@RequestScoped
 @SessionScoped
 @ManagedBean
 
-public class AccountBean implements Serializable {
 
+public class AccountBean extends DBConnection implements Serializable {
     private String firstname;
     private String lastname;
     private String mi;
@@ -86,50 +82,48 @@ public class AccountBean implements Serializable {
     public String submit() throws ClassNotFoundException, SQLException {
         boolean go = true;
         if (containsUserDB(username)) {
-            flag = flag + "username Already Exists \n";
+            flag = flag + "Username Already Exists \n";
             go = false;
         }
         if (firstname.trim().equals("")) {
-            flag = flag + "First Name Cannot be blank \n";
+            flag = flag + "First Name Cannot Be Blank \n";
             go = false;
         }
         if (lastname.trim().equals("")) {
-            flag = flag + "Last Name Cannot be blank \n";
+            flag = flag + "Last Name Cannot Be Blank \n";
             go = false;
         }
         if (mi.trim().equals("")) {
-            flag = flag + "MI Cannot be blank \n";
+            flag = flag + "MI Cannot Be Blank \n";
             go = false;
         }
         if (username.trim().equals("")) {
-            flag = flag + "username Cannot be blank \n";
+            flag = flag + "Username Cannot Be Blank \n";
             go = false;
         }
         if (password.trim().equals("")) {
-            flag = flag + "Password Cannot be blank \n";
+            flag = flag + "Password Cannot Be Blank \n";
             go = false;
         }
         if (confirmPassword.trim().equals("")) {
-            flag = flag + "Confirm Password Cannot be blank \n";
+            flag = flag + "Confirm Password Cannot Be Blank \n";
             go = false;
         }
         if (!password.trim().equals(confirmPassword.trim())) {
-            flag = flag + "Passwords don't match \n";
+            flag = flag + "Passwords Do Not Match \n";
             go = false;
         }
         if (go) {
-            Class.forName("com.mysql.jdbc.Driver");
-          Connection con = DriverManager.getConnection("jdbc:mysql://liang.armstrong.edu:3306/nguyen", "nguyen", "tiger");
- 
-            PreparedStatement ps = con.prepareStatement("insert into user values(?,?,?,?,?,?)");
-            ps.setString(1, username);
-            ps.setString(2, firstname);
-            ps.setString(3, mi);
-            ps.setString(4, lastname);
-            ps.setString(5, password);
-            ps.setTimestamp(6, new Timestamp(new Date().getTime()));
-            int i = ps.executeUpdate();
-            flag = "Account Created";
+            initializeJdbc();           
+            insertUser.setString(1, username);
+            insertUser.setString(2, firstname);
+            insertUser.setString(3, mi);
+            insertUser.setString(4, lastname);
+            insertUser.setString(5, password);
+            insertUser.setTimestamp(6, new Timestamp(new Date().getTime()));
+            insertUser.executeUpdate();
+            flag = "Account Succesfully Created";
+            closeJdbc();
         }
 
         return "";
@@ -140,17 +134,9 @@ public class AccountBean implements Serializable {
     }
 
     public boolean containsUserDB(String user) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-       Connection con = DriverManager.getConnection("jdbc:mysql://liang.armstrong.edu:3306/nguyen", "nguyen", "tiger");
-
-        try {
-            PreparedStatement ps = con.prepareStatement("SELECT * from user WHERE username = ?");
-            ps.setString(1, user);
-            ResultSet rs = ps.executeQuery();
-            return rs.next();
-        } catch (Exception ex) {
-        }
-        return false;
+        initializeJdbc();          
+            userSelect.setString(1, user);
+            ResultSet rs = userSelect.executeQuery();
+            return rs.next(); 
     }
-
 }
